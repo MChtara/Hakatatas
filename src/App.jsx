@@ -1,21 +1,50 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import Report from './pages/Report';
 import Explainability from './pages/Explainability';
 import Tokenomics from './pages/Tokenomics';
+import Login from './pages/Login';
+import InvestorDashboard from './pages/InvestorDashboard';
+import ShareholderDashboard from './pages/ShareholderDashboard';
+import Unauthorized from './pages/Unauthorized';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const hideNavbarRoutes = ['/login', '/unauthorized', '/investor-dashboard', '/shareholder-dashboard'];
+  const showNavbar = !hideNavbarRoutes.includes(location.pathname);
+
   return (
-    <Router>
-      <div className="min-h-screen bg-darker">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/report" element={<Report />} />
-          <Route path="/explainability" element={<Explainability />} />
-          <Route path="/tokenomics" element={<Tokenomics />} />
-        </Routes>
+    <div className="min-h-screen bg-darker">
+      {showNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/report" element={<Report />} />
+        <Route path="/explainability" element={<Explainability />} />
+        <Route path="/tokenomics" element={<Tokenomics />} />
+        <Route
+          path="/investor-dashboard"
+          element={
+            <ProtectedRoute requiredRole="investor">
+              <InvestorDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/shareholder-dashboard"
+          element={
+            <ProtectedRoute requiredRole="shareholder">
+              <ShareholderDashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      {showNavbar && (
         <footer className="bg-dark border-t border-gray-800 mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex flex-col md:flex-row items-center justify-between">
@@ -50,8 +79,18 @@ function App() {
             </div>
           </div>
         </footer>
-      </div>
-    </Router>
+      )}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </AuthProvider>
   );
 }
 

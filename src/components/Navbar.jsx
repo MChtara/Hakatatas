@@ -1,10 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, isAuthenticated } = useAuth();
 
   const navLinks = [
-    { path: '/', label: 'Dashboard' },
+    { path: '/dashboard', label: 'Dashboard' },
     { path: '/report', label: 'AI Report' },
     { path: '/explainability', label: 'Explainability' },
     { path: '/tokenomics', label: 'Tokenomics' },
@@ -15,7 +17,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-2">
+            <Link to="/dashboard" className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">AI</span>
               </div>
@@ -48,6 +50,23 @@ const Navbar = () => {
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="text-sm text-gray-300">Live</span>
             </div>
+            {!isAuthenticated ? (
+              <Link
+                to="/login"
+                className="px-4 py-2 bg-gradient-to-r from-primary to-secondary text-white font-semibold rounded-lg hover:opacity-90 transition-all"
+              >
+                Connexion
+              </Link>
+            ) : (
+              <div className="flex items-center space-x-2 px-4 py-2 bg-gray-800 rounded-lg">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">
+                    {user?.name?.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <span className="text-sm text-gray-300">{user?.name}</span>
+              </div>
+            )}
           </div>
         </div>
       </div>

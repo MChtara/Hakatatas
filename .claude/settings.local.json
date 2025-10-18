@@ -5,7 +5,12 @@
       "Bash(npm run dev)",
       "Bash(timeout:*)",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: AI-WealthX - AI-Powered Investment Assistant\n\nFeatures:\n- Dashboard with interactive price charts for Tijari Bank and Injaz\n- AI-powered analysis using Sentiment, LSTM, VAR, and XAI models\n- AI Report page with investment recommendations and portfolio allocation\n- Explainability page with SHAP-based feature importance\n- Tokenomics page with blockchain token simulation\n- Full React + Vite + TailwindCSS stack\n- Recharts for data visualization\n- Mock data fallback for standalone testing\n\nTech Stack:\n- React 18.2.0\n- Vite 5.0.0\n- TailwindCSS 3.3.6\n- Recharts 2.10.0\n- React Router DOM 6.20.0\n- Axios 1.6.0\nEOF\n)\")",
+      "Bash(gh:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote add:*)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
